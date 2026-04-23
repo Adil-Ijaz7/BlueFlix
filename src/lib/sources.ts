@@ -37,6 +37,16 @@ export const SOURCES: Source[] = [
       ),
   },
   {
+    name: "VidSrc.in",
+    url: (t, id, s, e, audio) =>
+      langHint(
+        t === "movie"
+          ? `https://vidsrc.in/embed/movie/${id}`
+          : `https://vidsrc.in/embed/tv/${id}/${s ?? 1}/${e ?? 1}`,
+        audio,
+      ),
+  },
+  {
     name: "2Embed",
     url: (t, id, s, e) =>
       t === "movie"
