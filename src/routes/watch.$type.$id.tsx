@@ -117,9 +117,9 @@ function Watch() {
               {opt.label}
             </button>
           ))}
-          {audio !== "original" && SOURCES[sourceIdx].name !== "VidSrc.to" && SOURCES[sourceIdx].name !== "VidSrc.xyz" && SOURCES[sourceIdx].name !== "VidSrc.in" && (
+          {audio !== "original" && SOURCES[sourceIdx].name !== "VidSrc.to" && SOURCES[sourceIdx].name !== "VidSrc.xyz" && (
             <span className="text-[10px] text-muted-foreground ml-2">
-              ⚠ Hint not supported by this source — try VidSrc.to / VidSrc.xyz / VidSrc.in
+              ⚠ Hint not supported by this source — try VidSrc.to / VidSrc.xyz
             </span>
           )}
         </div>
