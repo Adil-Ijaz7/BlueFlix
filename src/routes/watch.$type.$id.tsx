@@ -55,30 +55,33 @@ function Watch() {
   const episodes = currentSeason ? Array.from({ length: currentSeason.episode_count }, (_, i) => i + 1) : [];
 
   return (
-    <div className="pb-12">
-      <div className="relative w-full bg-black aspect-video max-h-[80vh]">
+    <div className="pb-14">
+      <div className="relative mx-auto mt-4 w-full max-w-[1500px] px-0 md:mt-6 md:px-8">
+        <div className="relative aspect-video overflow-hidden rounded-none border-y border-border bg-surface md:rounded-md md:border">
         <iframe
           key={src}
           src={src}
           allowFullScreen
           allow="autoplay; encrypted-media; picture-in-picture"
           referrerPolicy="no-referrer"
-          className="w-full h-full border-0"
+          className="h-full w-full border-0"
           title={getTitle(details)}
         />
+        </div>
       </div>
 
-      {/* Source switcher */}
-      <div className="px-4 md:px-8 py-4 flex flex-wrap items-center gap-2 border-b border-border">
-        <span className="text-xs uppercase text-muted-foreground mr-2">{t.source}:</span>
+      <div className="mx-auto mt-6 grid w-full max-w-[1500px] gap-3 px-4 md:px-8">
+        <div className="rounded-md border border-border bg-surface px-4 py-4">
+          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t.source}</div>
+          <div className="flex flex-wrap items-center gap-2">
         {SOURCES.map((s, i) => (
           <button
             key={s.name}
             onClick={() => { setSourceIdx(i); setShowTrailer(false); }}
-            className={`px-3 py-1.5 rounded-full text-xs font-bold transition ${
+                className={`rounded-md border px-3 py-1.5 text-xs font-semibold transition ${
               !showTrailer && sourceIdx === i
-                ? "gradient-primary text-primary-foreground shadow-glow"
-                : "bg-surface-2 text-muted-foreground hover:text-foreground"
+                    ? "gradient-primary border-primary text-primary-foreground shadow-glow"
+                    : "border-border bg-surface-2 text-muted-foreground hover:text-foreground"
             }`}
           >
             {s.name}
@@ -87,19 +90,20 @@ function Watch() {
         {trailer && (
           <button
             onClick={() => setShowTrailer(true)}
-            className={`px-3 py-1.5 rounded-full text-xs font-bold transition ${
-              showTrailer ? "bg-red-600 text-white" : "bg-surface-2 text-muted-foreground hover:text-foreground"
+                className={`rounded-md border px-3 py-1.5 text-xs font-semibold transition ${
+              showTrailer ? "gradient-primary border-primary text-primary-foreground" : "border-border bg-surface-2 text-muted-foreground hover:text-foreground"
             }`}
           >
             ▶ {t.trailer}
           </button>
         )}
+          </div>
       </div>
 
-      {/* Audio language selector */}
       {!showTrailer && (
-        <div className="px-4 md:px-8 py-3 flex flex-wrap items-center gap-2 border-b border-border">
-          <span className="text-xs uppercase text-muted-foreground mr-2">{t.audio}:</span>
+          <div className="rounded-md border border-border bg-surface px-4 py-4">
+            <div className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t.audio}</div>
+            <div className="flex flex-wrap items-center gap-2">
           {([
             { key: "hi" as const, label: t.audioHindi },
             { key: "en" as const, label: t.audioEnglish },
@@ -108,32 +112,33 @@ function Watch() {
             <button
               key={opt.key}
               onClick={() => setAudio(opt.key)}
-              className={`px-3 py-1.5 rounded-full text-xs font-bold transition ${
+                  className={`rounded-md border px-3 py-1.5 text-xs font-semibold transition ${
                 audio === opt.key
-                  ? "gradient-primary text-primary-foreground shadow-glow"
-                  : "bg-surface-2 text-muted-foreground hover:text-foreground"
+                    ? "gradient-primary border-primary text-primary-foreground shadow-glow"
+                    : "border-border bg-surface-2 text-muted-foreground hover:text-foreground"
               }`}
             >
               {opt.label}
             </button>
           ))}
           {audio !== "original" && SOURCES[sourceIdx].name !== "VidSrc.to" && SOURCES[sourceIdx].name !== "VidSrc.xyz" && (
-            <span className="text-[10px] text-muted-foreground ml-2">
+                <span className="ml-1 text-[10px] text-muted-foreground">
               ⚠ Hint not supported by this source — try VidSrc.to / VidSrc.xyz
             </span>
           )}
+            </div>
         </div>
       )}
 
-      {/* TV episode selector */}
       {mediaType === "tv" && seasons.length > 0 && (
-        <div className="px-4 md:px-8 py-4 flex flex-wrap items-center gap-3 border-b border-border">
+          <div className="rounded-md border border-border bg-surface px-4 py-4">
+            <div className="flex flex-wrap items-end gap-3">
           <div>
-            <label className="block text-xs uppercase text-muted-foreground mb-1">{t.season}</label>
+                <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t.season}</label>
             <select
               value={season}
               onChange={(e) => { setSeason(Number(e.target.value)); setEpisode(1); }}
-              className="bg-surface-2 text-foreground rounded px-3 py-2 border border-border"
+                  className="rounded-md border border-border bg-surface-2 px-3 py-2 text-foreground"
             >
               {seasons.map((s) => (
                 <option key={s.season_number} value={s.season_number}>{s.name}</option>
@@ -141,16 +146,16 @@ function Watch() {
             </select>
           </div>
           <div className="flex-1 min-w-[200px]">
-            <label className="block text-xs uppercase text-muted-foreground mb-1">{t.episode}</label>
+                <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t.episode}</label>
             <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto">
               {episodes.map((ep) => (
                 <button
                   key={ep}
                   onClick={() => setEpisode(ep)}
-                  className={`min-w-[40px] px-2 py-1 rounded text-xs font-bold transition ${
+                      className={`min-w-[40px] rounded-md border px-2 py-1 text-xs font-semibold transition ${
                     episode === ep
-                      ? "gradient-primary text-primary-foreground"
-                      : "bg-surface-2 text-muted-foreground hover:text-foreground"
+                        ? "gradient-primary border-primary text-primary-foreground"
+                        : "border-border bg-surface-2 text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   {ep}
@@ -158,8 +163,10 @@ function Watch() {
               ))}
             </div>
           </div>
+            </div>
         </div>
       )}
+      </div>
 
       {/* Details */}
       <div className="px-4 md:px-8 py-8 grid md:grid-cols-[200px_1fr] gap-6 max-w-6xl">

@@ -8,7 +8,7 @@ export function PosterCard({ media, badge }: { media: Media; badge?: string }) {
     <Link
       to="/watch/$type/$id"
       params={{ type, id: String(media.id) }}
-      className="group relative w-[140px] shrink-0 overflow-hidden rounded-md border border-border bg-surface-2 shadow-card transition-transform duration-300 hover:z-10 hover:scale-[1.03] md:w-[180px]"
+      className="group relative w-[145px] shrink-0 overflow-hidden rounded-md border border-border bg-surface shadow-card transition duration-300 hover:z-10 hover:-translate-y-1 hover:border-primary/50 md:w-[185px]"
     >
       <div className="aspect-[2/3] bg-surface-2">
         {poster ? (
@@ -25,19 +25,19 @@ export function PosterCard({ media, badge }: { media: Media; badge?: string }) {
         )}
       </div>
       {badge && (
-        <span className="gradient-primary shadow-glow absolute left-2 top-2 rounded px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-primary-foreground">
+        <span className="gradient-primary shadow-glow absolute left-2 top-2 rounded-sm px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.08em] text-primary-foreground">
           {badge}
         </span>
       )}
-      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-background via-background/55 to-transparent p-3 opacity-0 transition group-hover:opacity-100">
+      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-background via-background/65 to-transparent p-3 opacity-0 transition group-hover:opacity-100">
         <div className="line-clamp-2 text-xs font-semibold">{getTitle(media)}</div>
-        <div className="text-[10px] text-muted-foreground flex items-center gap-2 mt-1">
+        <div className="mt-1 flex items-center gap-2 text-[10px] text-muted-foreground">
           <span>{getYear(media)}</span>
           {media.vote_average > 0 && (
             <span className="text-primary">★ {media.vote_average.toFixed(1)}</span>
           )}
         </div>
-        <span className="mt-1 text-[10px] uppercase text-muted-foreground">{type}</span>
+        <span className="mt-1 text-[10px] uppercase tracking-[0.08em] text-muted-foreground">{type}</span>
       </div>
     </Link>
   );
