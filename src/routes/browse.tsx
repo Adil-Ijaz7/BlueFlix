@@ -75,10 +75,10 @@ function Browse() {
   const hasFilters = genre !== undefined || year !== undefined || rating !== undefined;
 
   return (
-    <div className="px-4 md:px-8 py-8">
-      <h1 className="text-3xl md:text-5xl font-black tracking-tight mb-6">{title}</h1>
+    <div className="mx-auto w-full max-w-[1500px] px-4 py-8 md:px-8">
+      <h1 className="font-display text-3xl font-semibold tracking-normal md:text-5xl">{title}</h1>
 
-      <div className="space-y-4 mb-8">
+      <div className="mt-6 space-y-4 rounded-md border border-border bg-surface p-4 md:p-5">
         <FilterRow label={t.genre}>
           <Chip to="/browse" search={(p) => ({ ...p, genre: undefined })} active={genre === undefined}>
             {t.anyGenre}
@@ -133,9 +133,9 @@ function Browse() {
           <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       ) : items.length === 0 ? (
-        <div className="text-center py-20 text-muted-foreground">{t.noResults}</div>
+        <div className="rounded-md border border-border bg-surface py-20 text-center text-muted-foreground">{t.noResults}</div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 md:gap-4 lg:grid-cols-5 xl:grid-cols-6">
           {items.map((m) => <PosterCard key={m.id} media={m} />)}
         </div>
       )}
@@ -174,9 +174,9 @@ function Chip({
       to={to}
       search={search}
       className={cn(
-        "shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors whitespace-nowrap",
+        "shrink-0 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap",
         active
-          ? "bg-primary text-primary-foreground border-primary"
+          ? "gradient-primary border-primary text-primary-foreground"
           : "bg-surface-2 text-foreground border-border hover:bg-surface",
       )}
     >
