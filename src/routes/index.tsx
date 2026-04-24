@@ -51,10 +51,10 @@ function Home() {
 
   if (error) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center text-center px-4">
-        <div>
-          <p className="text-destructive font-bold">Failed to load: {error}</p>
-          <button onClick={() => location.reload()} className="mt-4 px-4 py-2 bg-primary rounded text-primary-foreground">Retry</button>
+      <div className="flex min-h-[60vh] items-center justify-center px-4 text-center">
+        <div className="rounded-lg border border-border bg-surface/80 p-6 shadow-card backdrop-blur">
+          <p className="font-semibold text-destructive">Failed to load: {error}</p>
+          <button onClick={() => location.reload()} className="mt-4 rounded-md bg-primary px-4 py-2 font-semibold text-primary-foreground transition hover:brightness-110">Retry</button>
         </div>
       </div>
     );
@@ -62,8 +62,11 @@ function Home() {
 
   if (!data) {
     return (
-      <div className="min-h-[80vh] flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+      <div className="flex min-h-[80vh] items-center justify-center">
+        <div className="flex items-center gap-3 rounded-md border border-border bg-surface px-4 py-3">
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          <span className="text-sm text-muted-foreground">Loading titles...</span>
+        </div>
       </div>
     );
   }
@@ -71,7 +74,7 @@ function Home() {
   const hero = data.trending[0];
 
   return (
-    <div className="pb-12">
+    <div className="pb-14">
       {hero && <Hero media={hero} />}
       <Row title={t.trending} items={data.trending.slice(1)} />
       <Row title={t.bollywoodMovies} items={data.bollywood} />
