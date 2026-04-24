@@ -19,36 +19,53 @@ export function Hero({ media }: { media: Media }) {
       <div className="absolute inset-0 gradient-hero" />
       <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent" />
 
-      <div className="relative h-full flex flex-col justify-end pb-16 md:pb-24 px-4 md:px-12 max-w-3xl">
-        <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-shadow-hero leading-none">
-          {getTitle(media)}
-        </h1>
-        <div className="flex items-center gap-3 mt-3 text-sm text-muted-foreground">
-          {media.vote_average > 0 && (
-            <span className="text-primary font-bold">★ {media.vote_average.toFixed(1)}</span>
-          )}
-          <span>{getYear(media)}</span>
-          <span className="px-2 py-0.5 border border-border rounded text-xs uppercase">{type}</span>
+      <div className="relative mx-auto grid h-full w-full max-w-[1500px] items-end gap-8 px-4 pb-12 md:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)] md:px-8 md:pb-16">
+        <div>
+          <h1 className="font-display text-shadow-hero text-4xl font-semibold leading-none tracking-normal md:text-6xl">
+            {getTitle(media)}
+          </h1>
+          <div className="mt-3 flex items-center gap-3 text-sm text-muted-foreground">
+            {media.vote_average > 0 && (
+              <span className="font-semibold text-primary">★ {media.vote_average.toFixed(1)}</span>
+            )}
+            <span>{getYear(media)}</span>
+            <span className="rounded border border-border bg-surface/80 px-2 py-0.5 text-xs uppercase text-foreground">{type}</span>
+          </div>
+          <p className="mt-4 max-w-2xl line-clamp-3 text-sm text-foreground/90 text-shadow-hero md:text-base">
+            {media.overview}
+          </p>
+          <div className="mt-6 flex gap-3">
+            <Link
+              to="/watch/$type/$id"
+              params={{ type, id: String(media.id) }}
+              className="gradient-primary shadow-glow rounded-md px-6 py-3 font-semibold text-primary-foreground transition hover:brightness-110 md:px-8"
+            >
+              {t.play}
+            </Link>
+            <Link
+              to="/watch/$type/$id"
+              params={{ type, id: String(media.id) }}
+              className="rounded-md border border-border bg-surface-2/80 px-6 py-3 font-semibold text-foreground backdrop-blur transition hover:bg-surface md:px-8"
+            >
+              ⓘ {t.moreInfo}
+            </Link>
+          </div>
         </div>
-        <p className="mt-4 text-sm md:text-base text-foreground/90 line-clamp-3 max-w-xl text-shadow-hero">
-          {media.overview}
-        </p>
-        <div className="flex gap-3 mt-6">
-          <Link
-            to="/watch/$type/$id"
-            params={{ type, id: String(media.id) }}
-            className="gradient-primary shadow-glow text-primary-foreground font-bold px-6 md:px-8 py-3 rounded-md hover:brightness-110 transition"
-          >
-            {t.play}
-          </Link>
-          <Link
-            to="/watch/$type/$id"
-            params={{ type, id: String(media.id) }}
-            className="bg-surface-2/80 backdrop-blur text-foreground font-bold px-6 md:px-8 py-3 rounded-md hover:bg-surface-2 transition"
-          >
-            ⓘ {t.moreInfo}
-          </Link>
-        </div>
+
+        <aside className="hidden self-end rounded-lg border border-border bg-surface/80 p-5 shadow-card backdrop-blur md:block">
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Featured</p>
+          <p className="mt-2 line-clamp-2 font-display text-2xl font-semibold leading-tight">{getTitle(media)}</p>
+          <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+            <div className="rounded border border-border bg-background/40 p-3">
+              <p className="text-[11px] uppercase text-muted-foreground">Release</p>
+              <p className="mt-1 font-semibold text-foreground">{getYear(media)}</p>
+            </div>
+            <div className="rounded border border-border bg-background/40 p-3">
+              <p className="text-[11px] uppercase text-muted-foreground">Rating</p>
+              <p className="mt-1 font-semibold text-primary">{media.vote_average > 0 ? media.vote_average.toFixed(1) : "N/A"}</p>
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
   );

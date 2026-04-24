@@ -4,23 +4,23 @@ import { useLang } from "@/lib/i18n";
 export function Header() {
   const { lang, setLang, t } = useLang();
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border">
-      <div className="flex items-center justify-between px-4 md:px-8 py-3 gap-4">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/80 bg-background/80 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-4 py-3 md:px-8">
         <Link to="/" className="flex items-center gap-2 shrink-0">
-          <span className="text-2xl md:text-3xl font-black tracking-tighter bg-gradient-to-r from-primary to-red-400 bg-clip-text text-transparent">
+          <span className="font-display text-2xl font-semibold tracking-normal text-foreground md:text-3xl">
             {t.brand}
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
-          <Link to="/" activeProps={{ className: "text-foreground" }} className="hover:text-foreground transition">
+        <nav className="hidden items-center gap-5 text-sm font-medium text-muted-foreground md:flex">
+          <Link to="/" activeProps={{ className: "text-foreground" }} className="transition hover:text-foreground">
             {t.home}
           </Link>
           <Link
             to="/browse"
             search={{ cat: "movie" }}
             activeProps={{ className: "text-foreground" }}
-            className="hover:text-foreground transition"
+            className="transition hover:text-foreground"
           >
             {t.movies}
           </Link>
@@ -28,7 +28,7 @@ export function Header() {
             to="/browse"
             search={{ cat: "tv" }}
             activeProps={{ className: "text-foreground" }}
-            className="hover:text-foreground transition"
+            className="transition hover:text-foreground"
           >
             {t.tv}
           </Link>
@@ -36,17 +36,17 @@ export function Header() {
             to="/browse"
             search={{ cat: "bollywood" }}
             activeProps={{ className: "text-foreground" }}
-            className="hover:text-foreground transition"
+            className="transition hover:text-foreground"
           >
             {t.bollywood}
           </Link>
         </nav>
 
-        <div className="flex items-center gap-2 md:gap-3 flex-1 md:flex-initial justify-end">
+        <div className="flex flex-1 items-center justify-end gap-2 md:flex-initial md:gap-3">
           <Link
             to="/search"
             search={{ q: "" }}
-            className="flex items-center gap-2 bg-surface-2 hover:bg-surface px-3 py-2 rounded-full text-sm transition"
+            className="flex items-center gap-2 rounded-md border border-border bg-surface-2 px-3 py-2 text-sm transition hover:bg-surface"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8" />
@@ -56,7 +56,7 @@ export function Header() {
           </Link>
           <button
             onClick={() => setLang(lang === "en" ? "hi" : "en")}
-            className="px-3 py-2 rounded-full bg-primary/10 hover:bg-primary/20 text-primary text-sm font-bold transition border border-primary/30"
+            className="rounded-md border border-border bg-secondary px-3 py-2 text-sm font-semibold text-secondary-foreground transition hover:bg-surface"
             title={t.language}
           >
             {lang === "en" ? "हिं" : "EN"}
