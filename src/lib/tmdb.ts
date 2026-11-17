@@ -1,8 +1,12 @@
-// TMDB API client (key from the user's uploaded HTML)
-export const TMDB_KEY = "1f54bd990f1cdfb230adb312546d765d";
-export const TMDB_BASE = "https://api.themoviedb.org/3";
-export const IMG = (path: string | null, size: "w300" | "w500" | "w780" | "w1280" | "original" = "w500") =>
-  path ? `https://image.tmdb.org/t/p/${size}${path}` : "";
+// TMDB API client
+export const TMDB_KEY = import.meta.env.VITE_TMDB_API_KEY || "1f54bd990f1cdfb230adb312546d765d";
+export const TMDB_BASE = import.meta.env.VITE_TMDB_BASE_URL || "https://api.themoviedb.org/3";
+export const IMG_BASE = import.meta.env.VITE_TMDB_IMAGE_BASE_URL || "https://image.tmdb.org/t/p";
+
+export const IMG = (
+  path: string | null,
+  size: "w300" | "w500" | "w780" | "w1280" | "original" = "w500",
+) => (path ? `${IMG_BASE}/${size}${path}` : "");
 
 export type Lang = "en" | "hi";
 
@@ -36,7 +40,10 @@ const cache = new Map<string, { t: number; data: unknown }>();
 const TTL = 5 * 60 * 1000;
 
 async function tmdb<T>(path: string, params: Record<string, string | number> = {}): Promise<T> {
-  const usp = new URLSearchParams({ api_key: TMDB_KEY, ...Object.fromEntries(Object.entries(params).map(([k, v]) => [k, String(v)])) });
+  const usp = new URLSearchParams({
+    api_key: TMDB_KEY,
+    ...Object.fromEntries(Object.entries(params).map(([k, v]) => [k, String(v)])),
+  });
   const url = `${TMDB_BASE}${path}?${usp.toString()}`;
   const c = cache.get(url);
   if (c && Date.now() - c.t < TTL) return c.data as T;
@@ -51,13 +58,20 @@ const langParam = (l: Lang) => (l === "hi" ? "hi-IN" : "en-US");
 
 export const api = {
   trending: (lang: Lang) =>
-    tmdb<{ results: Media[] }>("/trending/all/day", { language: langParam(lang) }).then((r) => r.results),
+    tmdb<{ results: Media[] }>("/trending/all/day", { language: langParam(lang) }).then(
+      (r) => r.results,
+    ),
   popularMovies: (lang: Lang) =>
-    tmdb<{ results: Media[] }>("/movie/popular", { language: langParam(lang), region: lang === "hi" ? "IN" : "US" }).then((r) => r.results),
+    tmdb<{ results: Media[] }>("/movie/popular", {
+      language: langParam(lang),
+      region: lang === "hi" ? "IN" : "US",
+    }).then((r) => r.results),
   popularTV: (lang: Lang) =>
     tmdb<{ results: Media[] }>("/tv/popular", { language: langParam(lang) }).then((r) => r.results),
   topRated: (lang: Lang) =>
-    tmdb<{ results: Media[] }>("/movie/top_rated", { language: langParam(lang) }).then((r) => r.results),
+    tmdb<{ results: Media[] }>("/movie/top_rated", { language: langParam(lang) }).then(
+      (r) => r.results,
+    ),
   // Hindi/Bollywood discovery
   bollywood: (lang: Lang) =>
     tmdb<{ results: Media[] }>("/discover/movie", {
@@ -90,19 +104,34 @@ export const api = {
       watch_region: "IN",
     }).then((r) => r.results),
   search: (q: string, lang: Lang) =>
-    tmdb<{ results: Media[] }>("/search/multi", { query: q, language: langParam(lang), include_adult: "false" }).then(
-      (r) => r.results.filter((x) => x.media_type === "movie" || x.media_type === "tv"),
-    ),
+    tmdb<{ results: Media[] }>("/search/multi", {
+      query: q,
+      language: langParam(lang),
+      include_adult: "false",
+    }).then((r) => r.results.filter((x) => x.media_type === "movie" || x.media_type === "tv")),
   details: (type: "movie" | "tv", id: number, lang: Lang) =>
-    tmdb<MediaDetails>(`/${type}/${id}`, { language: langParam(lang), append_to_response: "videos" }),
+    tmdb<MediaDetails>(`/${type}/${id}`, {
+      language: langParam(lang),
+      append_to_response: "videos",
+    }),
   recommendations: (type: "movie" | "tv", id: number, lang: Lang) =>
-    tmdb<{ results: Media[] }>(`/${type}/${id}/recommendations`, { language: langParam(lang) }).then((r) => r.results),
+    tmdb<{ results: Media[] }>(`/${type}/${id}/recommendations`, {
+      language: langParam(lang),
+    }).then((r) => r.results),
   genres: (type: "movie" | "tv", lang: Lang) =>
-    tmdb<{ genres: { id: number; name: string }[] }>(`/genre/${type}/list`, { language: langParam(lang) }).then((r) => r.genres),
+    tmdb<{ genres: { id: number; name: string }[] }>(`/genre/${type}/list`, {
+      language: langParam(lang),
+    }).then((r) => r.genres),
   discover: (
     type: "movie" | "tv",
     lang: Lang,
-    opts: { genreId?: number; year?: number; minRating?: number; originalLanguage?: string; region?: string } = {},
+    opts: {
+      genreId?: number;
+      year?: number;
+      minRating?: number;
+      originalLanguage?: string;
+      region?: string;
+    } = {},
   ) => {
     const params: Record<string, string | number> = {
       language: langParam(lang),
@@ -121,7 +150,8 @@ export const api = {
   },
 };
 
-export const getTitle = (m: Media) => m.title || m.name || m.original_title || m.original_name || "Untitled";
+export const getTitle = (m: Media) =>
+  m.title || m.name || m.original_title || m.original_name || "Untitled";
 export const getYear = (m: Media) => {
   const d = m.release_date || m.first_air_date;
   return d ? d.slice(0, 4) : "";

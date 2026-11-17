@@ -3,7 +3,13 @@ export type AudioLang = "hi" | "en" | "original";
 
 export interface Source {
   name: string;
-  url: (type: "movie" | "tv", id: number, season?: number, episode?: number, audio?: AudioLang) => string;
+  url: (
+    type: "movie" | "tv",
+    id: number,
+    season?: number,
+    episode?: number,
+    audio?: AudioLang,
+  ) => string;
 }
 
 // Append an audio/subtitle language hint where the provider supports it.
