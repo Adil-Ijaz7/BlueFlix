@@ -19,9 +19,7 @@ export function TopBar() {
         </button>
 
         <Link to="/" className="flex items-center gap-2 md:hidden">
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-500 font-cinematic font-bold text-white shadow-md">
-            B
-          </span>
+          <img src="/logo.png" alt="BlueFlix" className="h-8 w-8 object-contain drop-shadow" />
           <span className="font-cinematic font-bold tracking-wide text-white">BlueFlix</span>
         </Link>
       </div>

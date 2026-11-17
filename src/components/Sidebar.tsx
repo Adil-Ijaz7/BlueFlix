@@ -20,11 +20,14 @@ export function Sidebar() {
       <div className="flex flex-col items-center gap-6">
         <NavLink
           to="/"
-          className="group relative flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 shadow-[0_0_20px_rgba(99,102,241,0.5)] transition duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(99,102,241,0.8)]"
+          className="group relative flex h-11 w-11 items-center justify-center rounded-2xl transition duration-300 hover:scale-110"
           title="BlueFlix"
         >
-          <span className="font-cinematic text-lg font-black tracking-wider text-white">B</span>
-          <span className="absolute -inset-0.5 rounded-2xl bg-indigo-500/20 blur-sm opacity-0 transition group-hover:opacity-100" />
+          <img
+            src="/logo.png"
+            alt="BlueFlix"
+            className="h-10 w-10 object-contain drop-shadow-[0_0_15px_rgba(99,102,241,0.5)] transition duration-300 group-hover:drop-shadow-[0_0_25px_rgba(99,102,241,0.9)]"
+          />
         </NavLink>
 
         {/* Primary Nav Icons */}
