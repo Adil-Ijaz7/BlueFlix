@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { Film, Tv, Flame, Sparkles, X, Filter } from "lucide-react";
-import { api, type Media } from "@/lib/tmdb";
+import { api } from "@/lib/tmdb";
 import { useLang } from "@/lib/i18n";
 import { PosterCard } from "@/components/PosterCard";
 import { cn } from "@/lib/utils";
@@ -10,12 +10,7 @@ const CURRENT_YEAR = new Date().getFullYear();
 const YEARS = Array.from({ length: 16 }, (_, i) => CURRENT_YEAR - i);
 const RATINGS = [9, 8, 7, 6, 5];
 
-function catToDiscover(cat: string): {
-  type: "movie" | "tv";
-  originalLanguage?: string;
-  region?: string;
-  baseMinRating?: number;
-} {
+function catToDiscover(cat) {
   switch (cat) {
     case "tv":
       return { type: "tv" };
@@ -42,8 +37,8 @@ export function Browse() {
   const rating = ratingParam ? Number(ratingParam) : undefined;
 
   const { lang, t } = useLang();
-  const [items, setItems] = useState<Media[] | null>(null);
-  const [genres, setGenres] = useState<{ id: number; name: string }[]>([]);
+  const [items, setItems] = useState(null);
+  const [genres, setGenres] = useState([]);
 
   const cfg = useMemo(() => catToDiscover(cat), [cat]);
 
@@ -102,7 +97,7 @@ export function Browse() {
 
   const hasFilters = genre !== undefined || year !== undefined || rating !== undefined;
 
-  const updateParam = (key: string, value: number | string | undefined) => {
+  const updateParam = (key, value) => {
     const next = new URLSearchParams(searchParams);
     if (value === undefined) {
       next.delete(key);
@@ -288,7 +283,7 @@ export function Browse() {
   );
 }
 
-function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
+function FilterRow({ label, children }) {
   return (
     <div>
       <div className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-white/40">

@@ -1,21 +1,13 @@
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { PosterCard } from "./PosterCard";
-import type { Media } from "@/lib/tmdb";
 
-interface RowProps {
-  title: string;
-  items: Media[];
-  badge?: string;
-  seeAllLink?: string;
-}
-
-export function Row({ title, items, badge, seeAllLink }: RowProps) {
+export function Row({ title, items, badge, seeAllLink }) {
   if (!items?.length) return null;
 
   return (
     <section className="mx-auto mt-10 w-full max-w-[1500px] px-5 md:px-10">
-      {/* Row Header (Matches screenshot "More Like This" + "See All") */}
+      {/* Row Header */}
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-bold tracking-tight text-white md:text-xl">{title}</h2>
 

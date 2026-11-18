@@ -1,23 +1,23 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Play, Volume2, Server, Star, Film, Sparkles } from "lucide-react";
-import { api, IMG, getTitle, getYear, type MediaDetails, type Media } from "@/lib/tmdb";
+import { Volume2, Server, Star, Film } from "lucide-react";
+import { api, IMG, getTitle, getYear } from "@/lib/tmdb";
 import { useLang } from "@/lib/i18n";
-import { SOURCES, type AudioLang } from "@/lib/sources";
+import { SOURCES } from "@/lib/sources";
 import { Row } from "@/components/Row";
 
 export function Watch() {
-  const { type, id } = useParams<{ type: string; id: string }>();
-  const mediaType = (type === "tv" ? "tv" : "movie") as "movie" | "tv";
+  const { type, id } = useParams();
+  const mediaType = type === "tv" ? "tv" : "movie";
   const tmdbId = Number(id);
   const { lang, t } = useLang();
-  const [details, setDetails] = useState<MediaDetails | null>(null);
-  const [recs, setRecs] = useState<Media[]>([]);
+  const [details, setDetails] = useState(null);
+  const [recs, setRecs] = useState([]);
   const [sourceIdx, setSourceIdx] = useState(0);
   const [season, setSeason] = useState(1);
   const [episode, setEpisode] = useState(1);
   const [showTrailer, setShowTrailer] = useState(false);
-  const [audio, setAudio] = useState<AudioLang>(lang === "hi" ? "hi" : "original");
+  const [audio, setAudio] = useState(lang === "hi" ? "hi" : "original");
 
   useEffect(() => {
     setAudio(lang === "hi" ? "hi" : "original");
@@ -167,9 +167,9 @@ export function Watch() {
 
             <div className="flex flex-wrap items-center gap-2">
               {[
-                { key: "hi" as const, label: t.audioHindi },
-                { key: "en" as const, label: t.audioEnglish },
-                { key: "original" as const, label: t.audioOriginal },
+                { key: "hi", label: t.audioHindi },
+                { key: "en", label: t.audioEnglish },
+                { key: "original", label: t.audioOriginal },
               ].map((opt) => (
                 <button
                   key={opt.key}
@@ -306,7 +306,7 @@ export function Watch() {
         </div>
       </div>
 
-      {/* "More Like This" Recommendations Row (Exact Match to screenshot!) */}
+      {/* "More Like This" Recommendations Row */}
       {recs.length > 0 && (
         <div className="mt-12">
           <Row title="More Like This" items={recs} />

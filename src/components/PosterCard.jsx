@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Play, Star } from "lucide-react";
-import { IMG, getTitle, getType, getYear, type Media } from "@/lib/tmdb";
+import { IMG, getTitle, getType, getYear } from "@/lib/tmdb";
 
-export function PosterCard({ media, badge }: { media: Media; badge?: string }) {
+export function PosterCard({ media, badge }) {
   const type = getType(media);
   const title = getTitle(media);
   const year = getYear(media);

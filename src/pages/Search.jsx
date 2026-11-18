@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Search as SearchIcon, X, Sparkles } from "lucide-react";
-import { api, type Media } from "@/lib/tmdb";
+import { api } from "@/lib/tmdb";
 import { useLang } from "@/lib/i18n";
 import { PosterCard } from "@/components/PosterCard";
 
@@ -9,7 +9,7 @@ export function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const q = searchParams.get("q") || "";
   const { lang, t } = useLang();
-  const [results, setResults] = useState<Media[] | null>(null);
+  const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

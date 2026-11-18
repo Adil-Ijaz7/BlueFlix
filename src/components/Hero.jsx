@@ -1,19 +1,15 @@
 import { Link } from "react-router-dom";
 import { Play, List, Plus, Film, Star, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
-import { IMG, getTitle, getType, getYear, type Media } from "@/lib/tmdb";
+import { IMG, getTitle, getType, getYear } from "@/lib/tmdb";
 import { useLang } from "@/lib/i18n";
 import { useState, useEffect, useRef } from "react";
 
-interface HeroProps {
-  items: Media[];
-}
-
-export function Hero({ items }: HeroProps) {
+export function Hero({ items }) {
   const { t } = useLang();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [inList, setInList] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef(null);
 
   const total = items.length;
   const current = items[currentIndex] || items[0];

@@ -1,27 +1,15 @@
 // Multi-source video embed providers
-export type AudioLang = "hi" | "en" | "original";
-
-export interface Source {
-  name: string;
-  url: (
-    type: "movie" | "tv",
-    id: number,
-    season?: number,
-    episode?: number,
-    audio?: AudioLang,
-  ) => string;
-}
 
 // Append an audio/subtitle language hint where the provider supports it.
 // vidsrc.to / vidsrc.xyz accept ?ds_lang=<iso639-1> (default subtitle/audio language).
 // "original" → no hint (let the provider use the title's original audio).
-const langHint = (url: string, audio?: AudioLang) => {
+const langHint = (url, audio) => {
   if (!audio || audio === "original") return url;
   const code = audio === "hi" ? "hi" : "en";
   return `${url}${url.includes("?") ? "&" : "?"}ds_lang=${code}`;
 };
 
-export const SOURCES: Source[] = [
+export const SOURCES = [
   {
     name: "VidSrc.to",
     url: (t, id, s, e, audio) =>

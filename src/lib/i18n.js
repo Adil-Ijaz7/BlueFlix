@@ -1,51 +1,6 @@
 import { createContext, useContext } from "react";
-import type { Lang } from "./tmdb";
 
-export type T = Record<
-  | "brand"
-  | "home"
-  | "movies"
-  | "tv"
-  | "bollywood"
-  | "search"
-  | "play"
-  | "moreInfo"
-  | "trending"
-  | "popularMovies"
-  | "popularTV"
-  | "topRated"
-  | "bollywoodMovies"
-  | "hindiSeries"
-  | "recommended"
-  | "overview"
-  | "rating"
-  | "year"
-  | "runtime"
-  | "season"
-  | "episode"
-  | "source"
-  | "trailer"
-  | "noResults"
-  | "searching"
-  | "close"
-  | "language"
-  | "filters"
-  | "genre"
-  | "anyGenre"
-  | "anyYear"
-  | "minRating"
-  | "any"
-  | "clearFilters"
-  | "hindiDubbedMovies"
-  | "hindiDubbedTV"
-  | "audio"
-  | "audioHindi"
-  | "audioEnglish"
-  | "audioOriginal",
-  string
->;
-
-export const dict: { en: T; hi: T } = {
+export const dict = {
   en: {
     brand: "BlueFlix",
     home: "Home",
@@ -132,7 +87,7 @@ export const dict: { en: T; hi: T } = {
   },
 };
 
-export const LangContext = createContext<{ lang: Lang; setLang: (l: Lang) => void; t: T }>({
+export const LangContext = createContext({
   lang: "en",
   setLang: () => {},
   t: dict.en,

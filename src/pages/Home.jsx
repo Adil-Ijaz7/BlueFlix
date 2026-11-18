@@ -1,24 +1,13 @@
 import { useEffect, useState } from "react";
 import { Hero } from "@/components/Hero";
 import { Row } from "@/components/Row";
-import { api, type Media } from "@/lib/tmdb";
+import { api } from "@/lib/tmdb";
 import { useLang } from "@/lib/i18n";
-
-interface Bundle {
-  trending: Media[];
-  popularMovies: Media[];
-  popularTV: Media[];
-  topRated: Media[];
-  bollywood: Media[];
-  hindiTV: Media[];
-  hindiDubbedMovies: Media[];
-  hindiDubbedTV: Media[];
-}
 
 export function Home() {
   const { lang, t } = useLang();
-  const [data, setData] = useState<Bundle | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     document.title = "BlueFlix — Stream Movies & TV Shows";
@@ -42,10 +31,9 @@ export function Home() {
       .then((results) => {
         if (cancelled) return;
 
-        const getVal = (r: PromiseSettledResult<Media[]>) =>
-          r.status === "fulfilled" ? r.value : [];
+        const getVal = (r) => (r.status === "fulfilled" ? r.value : []);
 
-        const bundle: Bundle = {
+        const bundle = {
           trending: getVal(results[0]),
           popularMovies: getVal(results[1]),
           popularTV: getVal(results[2]),
@@ -63,7 +51,7 @@ export function Home() {
           setData(bundle);
         }
       })
-      .catch((e: Error) => {
+      .catch((e) => {
         if (!cancelled) setError(e.message);
       });
 
