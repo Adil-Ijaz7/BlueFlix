@@ -1,9 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Volume2, Server, Star, Film } from "lucide-react";
+import { Star, Film, Play, User } from "lucide-react";
 import { api, IMG, getTitle, getYear } from "@/lib/tmdb";
 import { useLang } from "@/lib/i18n";
-import { SOURCES } from "@/lib/sources";
 import { Row } from "@/components/Row";
 
 export function Watch() {
@@ -13,15 +12,9 @@ export function Watch() {
   const { lang, t } = useLang();
   const [details, setDetails] = useState(null);
   const [recs, setRecs] = useState([]);
-  const [sourceIdx, setSourceIdx] = useState(0);
   const [season, setSeason] = useState(1);
   const [episode, setEpisode] = useState(1);
   const [showTrailer, setShowTrailer] = useState(false);
-  const [audio, setAudio] = useState(lang === "hi" ? "hi" : "original");
-
-  useEffect(() => {
-    setAudio(lang === "hi" ? "hi" : "original");
-  }, [lang]);
 
   useEffect(() => {
     let cancelled = false;
@@ -66,22 +59,24 @@ export function Watch() {
       <div className="flex min-h-[80vh] items-center justify-center">
         <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#141620]/80 px-6 py-4 backdrop-blur-xl">
           <div className="h-6 w-6 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
-          <span className="text-sm font-medium text-white/70">Connecting to stream sources...</span>
+          <span className="text-sm font-medium text-white/70">Connecting to stream...</span>
         </div>
       </div>
     );
   }
 
-  const activeSource = SOURCES[sourceIdx] || SOURCES[0];
+  // VidSrc.to is the primary and only streaming provider
+  const vidsrcUrl =
+    mediaType === "movie"
+      ? `https://vidsrc.to/embed/movie/${tmdbId}`
+      : `https://vidsrc.to/embed/tv/${tmdbId}/${season}/${episode}`;
 
   const trailer =
-    details.videos?.results.find((v) => v.site === "YouTube" && v.type === "Trailer") ||
-    details.videos?.results.find((v) => v.site === "YouTube");
+    details.videos?.results?.find((v) => v.site === "YouTube" && v.type === "Trailer") ||
+    details.videos?.results?.find((v) => v.site === "YouTube");
 
   const src =
-    showTrailer && trailer
-      ? `https://www.youtube.com/embed/${trailer.key}?autoplay=1`
-      : activeSource.url(mediaType, tmdbId, season, episode, audio);
+    showTrailer && trailer ? `https://www.youtube.com/embed/${trailer.key}?autoplay=1` : vidsrcUrl;
 
   const seasons = details.seasons?.filter((s) => s.season_number > 0) ?? [];
   const currentSeason = seasons.find((s) => s.season_number === season);
@@ -90,10 +85,11 @@ export function Watch() {
     : [];
 
   const title = getTitle(details);
+  const cast = details.credits?.cast?.slice(0, 16) || [];
 
   return (
     <div className="pt-16 pb-16 md:pt-16">
-      {/* Theater Video Player Section with Ambient Glow */}
+      {/* Theater Video Player Section */}
       <div className="relative mx-auto mt-2 w-full max-w-[1500px] px-0 md:mt-4 md:px-8">
         {/* Soft backlight behind player */}
         <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-indigo-600/20 via-purple-600/20 to-indigo-600/20 blur-2xl opacity-60 pointer-events-none max-md:hidden" />
@@ -111,92 +107,9 @@ export function Watch() {
         </div>
       </div>
 
-      {/* Control Deck (Server Sources, Audio Switcher, Seasons/Episodes) */}
-      <div className="mx-auto mt-6 grid w-full max-w-[1500px] gap-4 px-5 md:px-8">
-        {/* Server Switcher Deck */}
-        <div className="rounded-2xl border border-white/10 bg-[#13151f]/90 p-4 shadow-xl backdrop-blur-xl">
-          <div className="mb-3 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white/50">
-              <Server className="h-3.5 w-3.5 text-indigo-400" />
-              <span>{t.source} Providers</span>
-            </div>
-            <span className="text-[11px] text-white/40">Switch server if playback is slow</span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            {SOURCES.map((s, i) => (
-              <button
-                key={s.name}
-                onClick={() => {
-                  setSourceIdx(i);
-                  setShowTrailer(false);
-                }}
-                className={`rounded-xl border px-3.5 py-2 text-xs font-semibold transition-all duration-200 ${
-                  !showTrailer && sourceIdx === i
-                    ? "border-indigo-400/50 bg-gradient-to-tr from-indigo-600 to-purple-600 text-white shadow-[0_0_16px_rgba(99,102,241,0.5)]"
-                    : "border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
-                }`}
-              >
-                {s.name}
-              </button>
-            ))}
-
-            {trailer && (
-              <button
-                onClick={() => setShowTrailer(true)}
-                className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-xs font-semibold transition-all duration-200 ${
-                  showTrailer
-                    ? "border-amber-400/50 bg-gradient-to-tr from-amber-600 to-amber-500 text-white shadow-[0_0_16px_rgba(245,158,11,0.5)]"
-                    : "border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
-                }`}
-              >
-                <Film className="h-3.5 w-3.5" />
-                <span>{t.trailer}</span>
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Audio Language Preference Deck */}
-        {!showTrailer && (
-          <div className="rounded-2xl border border-white/10 bg-[#13151f]/90 p-4 shadow-xl backdrop-blur-xl">
-            <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-white/50">
-              <Volume2 className="h-3.5 w-3.5 text-indigo-400" />
-              <span>{t.audio} Language Dub</span>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              {[
-                { key: "hi", label: t.audioHindi },
-                { key: "en", label: t.audioEnglish },
-                { key: "original", label: t.audioOriginal },
-              ].map((opt) => (
-                <button
-                  key={opt.key}
-                  onClick={() => setAudio(opt.key)}
-                  className={`rounded-xl border px-3.5 py-2 text-xs font-semibold transition-all duration-200 ${
-                    audio === opt.key
-                      ? "border-indigo-400/50 bg-gradient-to-tr from-indigo-600 to-purple-600 text-white shadow-[0_0_16px_rgba(99,102,241,0.5)]"
-                      : "border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-
-              {audio !== "original" &&
-                activeSource.name !== "VidSrc.to" &&
-                activeSource.name !== "VidSrc.xyz" && (
-                  <span className="ml-2 text-[11px] text-amber-400/80">
-                    💡 For Hindi audio track, VidSrc.to or VidSrc.xyz is recommended.
-                  </span>
-                )}
-            </div>
-          </div>
-        )}
-
-        {/* Season & Episode Selector for TV Series */}
-        {mediaType === "tv" && seasons.length > 0 && (
+      {/* TV Season & Episode Selector */}
+      {mediaType === "tv" && seasons.length > 0 && (
+        <div className="mx-auto mt-6 w-full max-w-[1500px] px-5 md:px-8">
           <div className="rounded-2xl border border-white/10 bg-[#13151f]/90 p-5 shadow-xl backdrop-blur-xl">
             <div className="flex flex-wrap items-center gap-4">
               <div>
@@ -227,9 +140,12 @@ export function Watch() {
                   {episodes.map((ep) => (
                     <button
                       key={ep}
-                      onClick={() => setEpisode(ep)}
+                      onClick={() => {
+                        setEpisode(ep);
+                        setShowTrailer(false);
+                      }}
                       className={`min-w-[42px] rounded-xl border px-3 py-1.5 text-xs font-bold transition-all duration-200 ${
-                        episode === ep
+                        episode === ep && !showTrailer
                           ? "border-indigo-400 bg-indigo-600 text-white shadow-[0_0_12px_rgba(99,102,241,0.6)]"
                           : "border-white/10 bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
                       }`}
@@ -241,10 +157,10 @@ export function Watch() {
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* Movie/Series Info Overview */}
+      {/* Movie Details, Rating, and Summary */}
       <div className="mx-auto mt-8 grid max-w-[1500px] gap-8 px-5 md:grid-cols-[220px_1fr] md:px-8">
         {details.poster_path && (
           <img
@@ -254,13 +170,36 @@ export function Watch() {
           />
         )}
         <div className="flex flex-col justify-center">
-          <h1 className="font-cinematic text-3xl font-black uppercase tracking-wider text-white md:text-5xl">
-            {title}
-          </h1>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <h1 className="font-cinematic text-3xl font-black uppercase tracking-wider text-white md:text-5xl">
+              {title}
+            </h1>
+
+            {/* Trailer toggle button if trailer available */}
+            {trailer && (
+              <button
+                onClick={() => setShowTrailer(!showTrailer)}
+                className={`flex items-center gap-2 rounded-xl border px-4 py-2 text-xs font-semibold transition-all duration-200 ${
+                  showTrailer
+                    ? "border-amber-400/50 bg-gradient-to-tr from-amber-600 to-amber-500 text-white shadow-[0_0_16px_rgba(245,158,11,0.5)]"
+                    : "border-white/10 bg-white/5 text-white/75 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                {showTrailer ? (
+                  <Play className="h-3.5 w-3.5 fill-current" />
+                ) : (
+                  <Film className="h-3.5 w-3.5" />
+                )}
+                <span>{showTrailer ? "Back to Stream" : "Watch Trailer"}</span>
+              </button>
+            )}
+          </div>
+
           {details.tagline && (
             <p className="mt-2 text-sm italic text-indigo-400/90">{details.tagline}</p>
           )}
 
+          {/* Rating, Year, Runtime */}
           <div className="mt-4 flex flex-wrap items-center gap-3 text-xs font-semibold text-white/70">
             {details.vote_average > 0 && (
               <span className="flex items-center gap-1 text-amber-400">
@@ -268,6 +207,7 @@ export function Watch() {
                 <span className="text-sm font-bold text-white">
                   {details.vote_average.toFixed(1)}
                 </span>
+                <span className="text-[11px] text-white/40">/ 10</span>
               </span>
             )}
             <span className="text-white/40">·</span>
@@ -284,6 +224,7 @@ export function Watch() {
             </span>
           </div>
 
+          {/* Genres */}
           {details.genres && details.genres.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-2">
               {details.genres.map((g) => (
@@ -297,16 +238,62 @@ export function Watch() {
             </div>
           )}
 
+          {/* Movie Summary */}
           <h2 className="mt-6 text-sm font-bold uppercase tracking-wider text-white/50">
             {t.overview}
           </h2>
           <p className="mt-2 max-w-3xl text-sm leading-relaxed text-white/80 md:text-base">
-            {details.overview}
+            {details.overview || "No overview available for this title."}
           </p>
         </div>
       </div>
 
-      {/* "More Like This" Recommendations Row */}
+      {/* Starring People (Cast) */}
+      {cast.length > 0 && (
+        <div className="mx-auto mt-12 w-full max-w-[1500px] px-5 md:px-8">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-bold tracking-tight text-white md:text-xl">
+              Starring Cast
+            </h2>
+            <span className="text-xs font-semibold text-white/40">{cast.length} Actors</span>
+          </div>
+
+          <div className="row-scroll -mx-5 flex gap-4 overflow-x-auto pb-4 px-5 md:-mx-8 md:px-8">
+            {cast.map((person) => {
+              const photo = IMG(person.profile_path, "w185");
+              return (
+                <div
+                  key={person.id}
+                  className="group flex w-[120px] shrink-0 flex-col items-center text-center transition-transform hover:-translate-y-1 sm:w-[130px]"
+                >
+                  <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-white/10 bg-[#161824] shadow-md transition group-hover:border-indigo-500/50 group-hover:shadow-[0_0_15px_rgba(99,102,241,0.3)]">
+                    {photo ? (
+                      <img
+                        src={photo}
+                        alt={person.name}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center bg-white/5 text-white/30">
+                        <User className="h-10 w-10" />
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="mt-2.5 line-clamp-1 w-full text-xs font-bold text-white group-hover:text-indigo-400">
+                    {person.name}
+                  </h3>
+                  <p className="line-clamp-1 w-full text-[11px] text-white/50">
+                    {person.character}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* "More Like This" Recommendations */}
       {recs.length > 0 && (
         <div className="mt-12">
           <Row title="More Like This" items={recs} />

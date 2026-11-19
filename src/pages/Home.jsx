@@ -95,17 +95,11 @@ export function Home() {
       <Row
         title={t.hindiDubbedMovies}
         items={data.hindiDubbedMovies}
-        badge="HI Dub"
         seeAllLink="/browse?cat=movie"
       />
       <Row title={t.popularMovies} items={data.popularMovies} seeAllLink="/browse?cat=movie" />
       <Row title={t.hindiSeries} items={data.hindiTV} seeAllLink="/browse?cat=hindi-tv" />
-      <Row
-        title={t.hindiDubbedTV}
-        items={data.hindiDubbedTV}
-        badge="HI Dub"
-        seeAllLink="/browse?cat=tv"
-      />
+      <Row title={t.hindiDubbedTV} items={data.hindiDubbedTV} seeAllLink="/browse?cat=tv" />
       <Row title={t.popularTV} items={data.popularTV} seeAllLink="/browse?cat=tv" />
       <Row title={t.topRated} items={data.topRated} seeAllLink="/browse?cat=top" />
     </div>

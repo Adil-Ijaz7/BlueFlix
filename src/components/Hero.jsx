@@ -14,18 +14,18 @@ export function Hero({ items }) {
   const total = items.length;
   const current = items[currentIndex] || items[0];
 
-  // Auto-advance slideshow every 6 seconds (pauses on mouse hover)
+  // Auto-advance slideshow every 5 seconds (pauses on mouse hover, resets on slide change)
   useEffect(() => {
     if (total <= 1 || isPaused) return;
 
     timerRef.current = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % total);
-    }, 6000);
+    }, 5000);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [total, isPaused]);
+  }, [total, isPaused, currentIndex]);
 
   if (!current) return null;
 

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { PosterCard } from "./PosterCard";
 
-export function Row({ title, items, badge, seeAllLink }) {
+export function Row({ title, items, seeAllLink }) {
   if (!items?.length) return null;
 
   return (
@@ -29,7 +29,7 @@ export function Row({ title, items, badge, seeAllLink }) {
       {/* Horizontal Carousel */}
       <div className="row-scroll -mx-5 flex gap-4 overflow-x-auto pb-4 px-5 md:-mx-10 md:px-10">
         {items.map((m) => (
-          <PosterCard key={`${m.id}-${m.media_type ?? ""}`} media={m} badge={badge} />
+          <PosterCard key={`${m.id}-${m.media_type ?? ""}`} media={m} />
         ))}
       </div>
     </section>

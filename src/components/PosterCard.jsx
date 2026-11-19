@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Play, Star } from "lucide-react";
 import { IMG, getTitle, getType, getYear } from "@/lib/tmdb";
 
-export function PosterCard({ media, badge }) {
+export function PosterCard({ media }) {
   const type = getType(media);
   const title = getTitle(media);
   const year = getYear(media);
@@ -26,13 +26,6 @@ export function PosterCard({ media, badge }) {
         ) : (
           <div className="flex h-full w-full items-center justify-center p-4 text-center text-xs text-white/40">
             {title}
-          </div>
-        )}
-
-        {/* Top Badge (if provided) */}
-        {badge && (
-          <div className="absolute left-2.5 top-2.5 z-10 rounded-md border border-indigo-400/30 bg-indigo-600/90 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-md backdrop-blur-md">
-            {badge}
           </div>
         )}
 

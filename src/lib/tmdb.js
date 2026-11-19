@@ -76,7 +76,7 @@ export const api = {
   details: (type, id, lang) =>
     tmdb(`/${type}/${id}`, {
       language: langParam(lang),
-      append_to_response: "videos",
+      append_to_response: "videos,credits",
     }),
   recommendations: (type, id, lang) =>
     tmdb(`/${type}/${id}/recommendations`, {
