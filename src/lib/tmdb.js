@@ -67,6 +67,47 @@ export const api = {
       "vote_count.gte": 200,
       watch_region: "IN",
     }).then((r) => r.results),
+  // Anime & Cartoons discovery
+  animeTrending: (lang) =>
+    tmdb("/discover/tv", {
+      language: langParam(lang),
+      with_genres: 16,
+      with_original_language: "ja",
+      sort_by: "popularity.desc",
+      "vote_count.gte": 50,
+    }).then((r) => r.results),
+  animeAction: (lang) =>
+    tmdb("/discover/tv", {
+      language: langParam(lang),
+      with_genres: "16,10759",
+      with_original_language: "ja",
+      sort_by: "popularity.desc",
+      "vote_count.gte": 30,
+    }).then((r) => r.results),
+  cartoons: (lang) =>
+    tmdb("/discover/tv", {
+      language: langParam(lang),
+      with_genres: 16,
+      with_original_language: "en",
+      sort_by: "popularity.desc",
+      "vote_count.gte": 80,
+    }).then((r) => r.results),
+  animeMovies: (lang) =>
+    tmdb("/discover/movie", {
+      language: langParam(lang),
+      with_genres: 16,
+      with_original_language: "ja",
+      sort_by: "popularity.desc",
+      "vote_count.gte": 40,
+    }).then((r) => r.results),
+  animeTopRated: (lang) =>
+    tmdb("/discover/tv", {
+      language: langParam(lang),
+      with_genres: 16,
+      sort_by: "vote_average.desc",
+      "vote_average.gte": 8.0,
+      "vote_count.gte": 250,
+    }).then((r) => r.results),
   search: (q, lang) =>
     tmdb("/search/multi", {
       query: q,

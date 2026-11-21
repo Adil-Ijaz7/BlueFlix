@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Home, Film, Tv, Flame, Search } from "lucide-react";
+import { Home, Film, Tv, Ghost, Search } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 
 export function MobileNav() {
@@ -9,7 +9,7 @@ export function MobileNav() {
     { to: "/", icon: Home, label: t.home, end: true },
     { to: "/browse?cat=movie", icon: Film, label: t.movies },
     { to: "/browse?cat=tv", icon: Tv, label: t.tv },
-    { to: "/browse?cat=bollywood", icon: Flame, label: t.bollywood },
+    { to: "/anime", icon: Ghost, label: "Anime" },
     { to: "/search", icon: Search, label: t.search },
   ];
 

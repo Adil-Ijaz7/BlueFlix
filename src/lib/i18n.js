@@ -42,6 +42,12 @@ export const dict = {
     audioHindi: "Hindi",
     audioEnglish: "English",
     audioOriginal: "Original",
+    anime: "Anime & Cartoons",
+    trendingAnime: "Trending Anime",
+    actionAnime: "Action & Adventure Anime",
+    cartoons: "Popular Cartoons",
+    animeMovies: "Anime Feature Films",
+    topRatedAnime: "Top Rated Masterpieces",
   },
   hi: {
     brand: "BlueFlix",
@@ -84,6 +90,12 @@ export const dict = {
     audioHindi: "हिंदी",
     audioEnglish: "अंग्रेज़ी",
     audioOriginal: "मूल",
+    anime: "एनिमे और कार्टून",
+    trendingAnime: "ट्रेंडिंग एनिमे",
+    actionAnime: "एक्शन एनिमे",
+    cartoons: "लोकप्रिय कार्टून",
+    animeMovies: "एनिमे फ़िल्में",
+    topRatedAnime: "सर्वोच्च रेटेड एनिमे",
   },
 };
 

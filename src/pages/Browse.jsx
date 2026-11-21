@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import { Film, Tv, Flame, Sparkles, X, Filter } from "lucide-react";
+import { Film, Tv, Flame, Sparkles, X, Filter, Ghost } from "lucide-react";
 import { api } from "@/lib/tmdb";
 import { useLang } from "@/lib/i18n";
 import { PosterCard } from "@/components/PosterCard";
@@ -14,6 +14,8 @@ function catToDiscover(cat) {
   switch (cat) {
     case "tv":
       return { type: "tv" };
+    case "anime":
+      return { type: "tv", genreId: 16 };
     case "bollywood":
       return { type: "movie", originalLanguage: "hi", region: "IN" };
     case "hindi-tv":
@@ -47,11 +49,13 @@ export function Browse() {
       ? t.popularMovies
       : cat === "tv"
         ? t.popularTV
-        : cat === "bollywood"
-          ? t.bollywoodMovies
-          : cat === "hindi-tv"
-            ? t.hindiSeries
-            : t.topRated;
+        : cat === "anime"
+          ? t.anime
+          : cat === "bollywood"
+            ? t.bollywoodMovies
+            : cat === "hindi-tv"
+              ? t.hindiSeries
+              : t.topRated;
 
   useEffect(() => {
     document.title = `${title} — BlueFlix`;
@@ -116,6 +120,7 @@ export function Browse() {
   const categories = [
     { id: "movie", label: t.movies, icon: Film },
     { id: "tv", label: t.tv, icon: Tv },
+    { id: "anime", label: t.anime, icon: Ghost },
     { id: "bollywood", label: t.bollywood, icon: Flame },
     { id: "hindi-tv", label: t.hindiSeries, icon: Tv },
     { id: "top", label: t.topRated, icon: Sparkles },

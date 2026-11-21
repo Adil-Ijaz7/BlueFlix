@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Home, Film, Tv, Flame, Search, Sparkles, Globe } from "lucide-react";
+import { Home, Film, Tv, Ghost, Flame, Search, Sparkles, Globe } from "lucide-react";
 import { useLang } from "@/lib/i18n";
 
 export function Sidebar() {
@@ -9,6 +9,7 @@ export function Sidebar() {
     { to: "/", icon: Home, label: t.home, end: true },
     { to: "/browse?cat=movie", icon: Film, label: t.movies },
     { to: "/browse?cat=tv", icon: Tv, label: t.tv },
+    { to: "/anime", icon: Ghost, label: t.anime },
     { to: "/browse?cat=bollywood", icon: Flame, label: t.bollywood },
     { to: "/browse?cat=top", icon: Sparkles, label: t.topRated },
     { to: "/search", icon: Search, label: t.search },
